@@ -79,7 +79,7 @@ const App = () => {
                 body.source_lang = sourceLang;
             }
 
-            const response = await fetch(`${process.env.REACT_APP_DEEPLX_API_URL}/translate?token=${process.env.REACT_APP_API_TOKEN}`, {
+            const response = await fetch(`${process.env.REACT_APP_DEEPLX_API_URL}?token=${process.env.REACT_APP_API_TOKEN}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -364,6 +364,32 @@ const App = () => {
             </div>
             
             <div className="features-bar"> */}
+                <div className="language-selection">
+                    <select value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
+                        {sourceLanguages.map(langCode => (
+                            <option key={langCode} value={langCode}>
+                                {langCode === 'AUTO' ? t('sourceLanguages.AUTO') : t(`sourceLanguages.${langCode}`)}
+                            </option>
+                        ))}
+                    </select>
+                    <button onClick={handleSwapLanguages} className="action-button" title={t('swapLanguages')}>⇄</button>
+                    <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
+                        {targetLanguages.map(langCode => (
+                            <option key={langCode} value={langCode}>
+                                {t(`targetLanguages.${langCode}`)}
+                            </option>
+                        ))}
+                    </select>
+                    <button 
+                        onClick={handleTranslate} 
+                        disabled={loading || !text.trim()} 
+                        className="translate-button"
+                    >
+                        <span className="translate-button-icon">🔄</span>
+                        {loading ? t('translating') : t('translate')}
+                    </button>
+                </div>
+                
                 <button 
                     className="feature-button" 
                     onClick={() => setHistoryOpen(true)}
@@ -374,31 +400,6 @@ const App = () => {
                 {/* Additional feature buttons could be added here */}
             </div>
             
-            <div className="language-selection">
-                <select value={sourceLang} onChange={(e) => setSourceLang(e.target.value)}>
-                    {sourceLanguages.map(langCode => (
-                        <option key={langCode} value={langCode}>
-                            {langCode === 'AUTO' ? t('sourceLanguages.AUTO') : t(`sourceLanguages.${langCode}`)}
-                        </option>
-                    ))}
-                </select>
-                <button onClick={handleSwapLanguages} className="swap-button" title={t('swapLanguages')}>⇄</button>
-                <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)}>
-                    {targetLanguages.map(langCode => (
-                        <option key={langCode} value={langCode}>
-                            {t(`targetLanguages.${langCode}`)}
-                        </option>
-                    ))}
-                </select>
-                <button 
-                    onClick={handleTranslate} 
-                    disabled={loading || !text.trim()} 
-                    className="translate-button"
-                >
-                    <span className="translate-button-icon">🔄</span>
-                    {loading ? t('translating') : t('translate')}
-                </button>
-            </div>
             
             <div className="text-areas">
                 <div className="textarea-container">
