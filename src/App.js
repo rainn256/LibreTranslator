@@ -450,8 +450,6 @@ const App = () => {
                         onKeyDown={handleKeyDown}
                         placeholder={t('inputPlaceholder')}
                     />
-                    <div className="info-bar">
-                    </div>
                 </div>
                 
                 <div className="textarea-container">
