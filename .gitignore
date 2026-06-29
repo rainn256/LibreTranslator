@@ -1,0 +1,9 @@
+# Logs
+logs
+*.log
+
+.env.development
+.env.production
+.vscode
+
+node_modules/

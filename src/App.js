@@ -19,7 +19,7 @@ const App = () => {
     const [loading, setLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [password, setPassword] = useState('');
-    const [autoTranslate, setAutoTranslate] = useState(true);
+    const [autoTranslate, setAutoTranslate] = useState(false);
     const [historyOpen, setHistoryOpen] = useState(false);
     const [history, setHistory] = useState([]);
     const [detectedLanguage, setDetectedLanguage] = useState('');
@@ -319,7 +319,7 @@ const App = () => {
     if (!isAuthenticated) {
         return (
             <div className="password-container">
-                <h1>LibreTranslator</h1>
+                <h1>在线翻译</h1>
                 <input
                     type="password"
                     value={password}
@@ -340,8 +340,8 @@ const App = () => {
     return (
         <div className="container">
             <div className="app-header">
-                <h1 className="app-title">LibreTranslator</h1>
-                <div className="app-controls">
+                <h1 className="app-title">在线翻译</h1>
+                {/* <div className="app-controls">
                     <div className="language-switcher">
                         <label>Lang:</label>
                         <select onChange={changeLanguage} value={i18n.language}>
@@ -363,7 +363,7 @@ const App = () => {
                 </div>
             </div>
             
-            <div className="features-bar">
+            <div className="features-bar"> */}
                 <button 
                     className="feature-button" 
                     onClick={() => setHistoryOpen(true)}
@@ -390,6 +390,14 @@ const App = () => {
                         </option>
                     ))}
                 </select>
+                <button 
+                    onClick={handleTranslate} 
+                    disabled={loading || !text.trim()} 
+                    className="translate-button"
+                >
+                    <span className="translate-button-icon">🔄</span>
+                    {loading ? t('translating') : t('translate')}
+                </button>
             </div>
             
             <div className="text-areas">
@@ -399,10 +407,22 @@ const App = () => {
                             {sourceLang === 'AUTO' ? t('sourceLanguages.AUTO') : t(`sourceLanguages.${sourceLang}`)}
                             {sourceLang === 'AUTO' && detectedLanguage && ` (${t(`sourceLanguages.${detectedLanguage}`)})` }
                         </div>
+                        <div>
+                            <div className="char-count">{t('charCount')}: {inputCharCount}</div>
+                        </div>
                         <div className="textarea-actions">
                             {autoTranslate && (
                                 <div className="translation-pending-indicator" title={t('translating')}>⋯</div>
                             )}
+                            <button 
+                                onClick={() => handleCopy(text)} 
+                                className="action-button"
+                                title={t('copy')} 
+                                disabled={!text.trim()}
+                            >
+                                📋
+                                {/* {t('copy')} */}
+                            </button>
                             <button 
                                 className="action-button" 
                                 onClick={() => handleSpeak(text, detectedLanguage || sourceLang)}
@@ -431,14 +451,6 @@ const App = () => {
                         placeholder={t('inputPlaceholder')}
                     />
                     <div className="info-bar">
-                        <div className="char-count">{t('charCount')}: {inputCharCount}</div>
-                        <button 
-                            onClick={() => handleCopy(text)} 
-                            className="copy-button" 
-                            disabled={!text.trim()}
-                        >
-                            {t('copy')}
-                        </button>
                     </div>
                 </div>
                 
@@ -447,7 +459,17 @@ const App = () => {
                         <div className="textarea-header-language">
                             {t(`targetLanguages.${targetLang}`)}
                         </div>
+                        <div className="char-count">{t('charCount')}: {outputCharCount}</div>
                         <div className="textarea-actions">
+                            <button 
+                                onClick={() => handleCopy(translatedText)} 
+                                className="copy-button"
+                                title={t('copy')}
+                                disabled={!translatedText.trim()}
+                            >
+                                📋
+                                {/* {t('copy')} */}
+                            </button>
                             <button 
                                 className="action-button" 
                                 onClick={() => handleSpeak(translatedText, targetLang)}
@@ -472,30 +494,9 @@ const App = () => {
                         onChange={handleOutputChange}
                         placeholder={t('outputPlaceholder')}
                     />
-                    <div className="info-bar">
-                        <div className="char-count">{t('charCount')}: {outputCharCount}</div>
-                        <button 
-                            onClick={() => handleCopy(translatedText)} 
-                            className="copy-button"
-                            disabled={!translatedText.trim()}
-                        >
-                            {t('copy')}
-                        </button>
-                    </div>
                 </div>
             </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button 
-                    onClick={handleTranslate} 
-                    disabled={loading || !text.trim()} 
-                    className="translate-button"
-                >
-                    <span className="translate-button-icon">🔄</span>
-                    {loading ? t('translating') : t('translate')}
-                </button>
-            </div>
-            
+
             {message && (
                 <div className={`message ${isError ? 'error' : 'success'}`}>
                     {message}
@@ -503,7 +504,7 @@ const App = () => {
             )}
             
             <footer className="footer">
-                <a href="https://github.com/bestZwei/LibreTranslator" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://github.com/rainn256/LibreTranslator" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <span> | {t('poweredBy')}</span>
             </footer>
             
