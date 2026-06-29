@@ -390,6 +390,12 @@ const App = () => {
                     </button>
                 </div>
                 
+                {message && (
+                    <div className={`message ${isError ? 'error' : 'success'}`}>
+                        {message}
+                    </div>
+                )}
+
                 <button 
                     className="feature-button" 
                     onClick={() => setHistoryOpen(true)}
@@ -496,11 +502,6 @@ const App = () => {
                 </div>
             </div>
 
-            {message && (
-                <div className={`message ${isError ? 'error' : 'success'}`}>
-                    {message}
-                </div>
-            )}
             
             <footer className="footer">
                 <a href="https://github.com/rainn256/LibreTranslator" target="_blank" rel="noopener noreferrer">GitHub</a>
